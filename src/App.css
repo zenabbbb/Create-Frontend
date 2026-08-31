@@ -8,8 +8,8 @@
   --paper: #f7f4ee;
   --surface: #ffffff;
   --border: #e3ddcd;
-  --navy: #1e3a5f;
-  --navy-light: #2c527f;
+  --navy: #235347;
+  --navy-light: #2d6b5a;
   --brass: #b8935a;
   --brass-light: #e8d5b0;
   --text: #26313f;
@@ -68,14 +68,8 @@ h1, .brand-title {
   height: 38px;
   border-radius: 50%;
   border: 2px solid var(--brass);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Source Serif 4', Georgia, serif;
-  font-weight: 700;
-  font-size: 17px;
-  color: var(--brass-light);
   flex-shrink: 0;
+  object-fit: cover;
 }
 
 .brand-title {

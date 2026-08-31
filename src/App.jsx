@@ -7,8 +7,8 @@ import { getComponents, createComponent, updateComponent, deleteComponent } from
 import { getReservations, createReservation, updateReservation, deleteReservation } from "./api/componentReservations";
 import { getProjectPictures, createProjectPicture, updateProjectPicture, deleteProjectPicture } from "./api/projectPictures";
 import { getComponentPictures, createComponentPicture, updateComponentPicture, deleteComponentPicture } from "./api/componentPictures";
+import logo from "./assets/logo.jpeg";
 import "./App.css";
-
 const roleColors = { STUDENT: "#2f6fb0", TUTOR: "#3f7d4f", SUPERVISOR: "#8a4b6b" };
 
 // Each module's `fields` mirrors its Create/Patch model in API_CONTRACT.md exactly.
@@ -364,7 +364,7 @@ export default function App() {
       <header className="site-header">
         <div className="header-inner">
           <div className="brand">
-            <div className="seal">V</div>
+            <img src={logo} alt="Craete logo" className="seal" />
             <div>
               <div className="brand-title">The Vault Registry</div>
               <div className="brand-sub">Student Project &amp; Equipment Records</div>
