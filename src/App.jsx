@@ -13,16 +13,17 @@ const roleColors = { STUDENT: "#2f6fb0", TUTOR: "#3f7d4f", SUPERVISOR: "#8a4b6b"
 
 // Each module's `fields` mirrors its Create/Patch model in API_CONTRACT.md exactly.
 const MODULES = [
-  {
-    key: "users", num: "02", label: "Users",
-    list: getUsers, create: createUser, update: updateUser, remove: deleteUser,
-    fields: [
-      { name: "name", type: "text", required: true },
-      { name: "email", type: "text", required: true },
-      { name: "role", type: "select", options: ["STUDENT", "TUTOR", "SUPERVISOR"], required: true },
-      { name: "fieldId", type: "text", required: true, placeholder: "field UUID" },
-      { name: "projectIds", type: "list", placeholder: "comma-separated UUIDs" },
-    ],
+{
+  key: "users", num: "02", label: "Users",
+  list: getUsers, create: createUser, update: updateUser, remove: deleteUser,
+  fields: [
+    { name: "id", type: "number", required: true, placeholder: "e.g. student ID" },
+    { name: "name", type: "text", required: true },
+    { name: "email", type: "text", required: true },
+    { name: "role", type: "select", options: ["STUDENT", "TUTOR", "SUPERVISOR"], required: true },
+    { name: "fieldId", type: "text", required: true, placeholder: "field UUID" },
+    { name: "projectIds", type: "list", placeholder: "comma-separated UUIDs" },
+  ],
   },
   {
     key: "fields", num: "03", label: "Fields",
@@ -133,20 +134,22 @@ function FormModal({ module, initial, onClose, onSaved }) {
   const handleChange = (name, val) => setValues((v) => ({ ...v, [name]: val }));
 
   const buildPayload = () => {
-    const payload = isEdit ? { id: initial.id } : {};
-    module.fields.forEach((f) => {
-      let val = values[f.name];
-      if (f.type === "number") val = val === "" ? undefined : Number(val);
-      if (f.type === "list") {
-        val = val.split(",").map((s) => s.trim()).filter(Boolean);
-      }
-      if (f.type === "datetime") {
-        val = val ? `${val}:00Z` : undefined;
-      }
-      payload[f.name] = val;
-    });
-    return payload;
-  };
+  const payload = isEdit ? { id: initial.id } : {};
+  module.fields.forEach((f) => {
+    let val = values[f.name];
+    if (f.type === "number") val = val === "" ? undefined : Number(val);
+    if (f.type === "list") {
+      val = val.split(",").map((s) => s.trim()).filter(Boolean);
+    }
+    if (f.type === "datetime") {
+      val = val ? `${val}:00Z` : undefined;
+    }
+    // Backend quirk: UserCreateModel expects capital "Id", not "id" (contract inconsistency)
+    const key = module.key === "users" && f.name === "id" && !isEdit ? "Id" : f.name;
+    payload[key] = val;
+  });
+  return payload;
+};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
